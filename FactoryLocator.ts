@@ -1,6 +1,7 @@
-import IFactory from "./IFactory"
-import ISingletonFactory from "./ISingletonFactory"
+import IFactory from "./Factory/IFactory"
+import ISingletonFactory from "./Factory/ISingletonFactory"
 import { ServiceName } from "./ServiceName"
+import Singleton from "./Singleton"
 
 export default class FactoryLocator {
     
@@ -14,21 +15,26 @@ export default class FactoryLocator {
     }
 
     public static CreateSingletonInstance<G>(serviceName: ServiceName):G{
+        if(!this.LocatorInstance.singletonServices.has(serviceName)){
+            throw new Error('this singleton service does not exist')
+        }
         let instance = <ISingletonFactory<G>> this.LocatorInstance.singletonServices.get(serviceName)
         return instance?.CreateSingletonInstance()
     }
     public static CreateInstance<V>(serviceName: ServiceName):V{
-        let concreate =  <IFactory<V>> this.LocatorInstance.services.get(serviceName)
-        return concreate?.CreateInstance()
+        if(!this.LocatorInstance.services.has(serviceName)){
+            throw new Error('this service does not exist')
+        }
+
+        let instance =  <IFactory<V>> this.LocatorInstance.services.get(serviceName)
+        return instance?.CreateInstance()
     }
 
     public SaveInstance<B>(serviceName: ServiceName, factoryClass : new() => IFactory<B> ):void{
         this.services.set(serviceName, new factoryClass)
     }
 
-    public SaveSingletonInstance<T>(serviceName:ServiceName, singletonFactoryClass: new() => ISingletonFactory<T>){
+    public SaveSingletonInstance<T extends Singleton>(serviceName:ServiceName, singletonFactoryClass: new() => ISingletonFactory<T>){
         this.singletonServices.set(serviceName, new singletonFactoryClass)
     }
-
-
 }

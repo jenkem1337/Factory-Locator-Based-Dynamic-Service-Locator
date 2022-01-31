@@ -1,12 +1,11 @@
-export default class ArrayPushService{
-    private static instance:ArrayPushService
+import Singleton from '../Singleton';
+export default class ArrayPushService extends Singleton{
     private arr: Array<any> = [] 
-    private constructor(){}
+    public constructor(){
+        super()
+    }
     public static getInstance():ArrayPushService{
-        if(!ArrayPushService.instance){
-            ArrayPushService.instance = new ArrayPushService
-        }
-        return ArrayPushService.instance
+        return this.createSingletonInstance(this)
     }
 
     public addSomething(something:any){

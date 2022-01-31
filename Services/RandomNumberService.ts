@@ -1,13 +1,12 @@
-export default class RandomNumberService{
-    private static instance: RandomNumberService
+import Singleton from '../Singleton';
+export default class RandomNumberService extends Singleton{
     
-    public constructor(){}
+    public constructor(){
+        super()
+    }
 
     public static getInstance(): RandomNumberService {
-        if(!RandomNumberService.instance){
-            RandomNumberService.instance = new RandomNumberService()
-        }
-        return RandomNumberService.instance
+        return this.createSingletonInstance(this)
     }
 
     public getRandomNumber(){
