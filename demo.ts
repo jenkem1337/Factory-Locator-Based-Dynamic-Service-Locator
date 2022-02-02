@@ -34,7 +34,7 @@ arrayPushService2.addSomething(34567890)
 arrayPushService2.addSomething('Merhaba dünya')
 
 
-arrayPushService.getAll() /* arrayPushService2 return like below
+arrayPushService.getAll() /* arrayPushService return like below
                             0 =>    1337
                             1 =>    afajfsaa
                             2 =>    34567890
